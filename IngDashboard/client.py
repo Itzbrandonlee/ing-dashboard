@@ -47,7 +47,7 @@ class Client(Database):
     def delete_client(cls, client_id):
         conn = cls.get_db_connection()
         cur = conn.cursor()
-        cur.execute('DELETE FROM users WHERE id = %s;', (client_id,))
+        cur.execute('DELETE FROM client WHERE id = %s;', (client_id,))
         conn.commit()
         cur.close()
         conn.close()
