@@ -40,8 +40,7 @@ export default function DeleteClient({ client }: Props) {
 
     return (
         <div>
-            <p>Are you sure you want to delete this client? {client.name }</p>
-            <button onClick={handleDelete} disabled={loading}>{loading ? 'Deleting...' : 'Delete Client' }</button>
+            <button onClick={handleDelete} disabled={loading} className="bg-orange-400 text-white px-3 py-1 rounded hover:bg-orange-700">{loading ? 'Deleting...' : 'Delete Client' }</button>
         </div>
     )
 }
