@@ -55,23 +55,23 @@ export default function Clientadd() {
     }, [success])
     
     return (
-        <div>
-            <h1>Add New Client</h1>
+        <div className="bg-gray-200 border-black border border-l-8 p-4 rounded-md drop-shadow-md space-x-6">
+            <h1><b>Add New Client</b></h1>
             {success && <p>Client added successfully!</p>}
             <form onSubmit={handleSubmit}>
-                <div>
-                    <label htmlFor="name">Name:</label>
+                <div className="space-y-2">
+                    <label htmlFor="name">Name: </label>
                     <input type="text" id="name" value={name} onChange={(e) => setName(e.target.value)} required />
                 </div>
-                <div>
-                    <label htmlFor="email">Email:</label>
+                <div className="space-y-2">
+                    <label htmlFor="email">Email: </label>
                     <input type="text" id="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
                 </div>
-                <div>
-                    <label htmlFor="phoneNumber">Phone Number:</label>
+                <div className="space-y-2">
+                    <label htmlFor="phoneNumber">Phone Number: </label>
                     <input type="text" id="phoneNumber" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} required />
                 </div>
-                <button type="submit" disabled={loading}>{loading ? 'Submitting...' : 'Add Client' }</button>
+                <button type="submit" disabled={loading} className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-700">{loading ? 'Submitting...' : 'Add Client' }</button>
             </form>
         </div>
     )

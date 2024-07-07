@@ -53,6 +53,10 @@ export default function ClientList() {
             });
     };
 
+    const handleCancelEdit = () => {
+        setEditingClient(null);
+    };
+    
     const handleUpdateSuccess = () => {
         setEditingClient(null);
         getClients()
@@ -75,9 +79,7 @@ export default function ClientList() {
     return (
         <>
             <div className="w-3/4 mx-auto">
-                {editingClient && (
-                    <UpdateClient client={editingClient} onUpdateSuccess={handleUpdateSuccess} />
-                )}
+
                 <div>{addingClient && <AddClient onAddSuccess={handleAddSuccess} />}</div>
                 <div className="flex justify-end mb-4">
 
@@ -105,7 +107,20 @@ export default function ClientList() {
                             </div>
                         </li>
                     ))}
+                    
+                    {editingClient && (
+                        <div>
+                            <UpdateClient client={editingClient} onUpdateSuccess={handleUpdateSuccess} />
+                            <button
+                                onClick={handleCancelEdit}
+                                className="bg-red-500 text-white px-4 py-2 rounded mt-2"
+                            >
+                                Cancel Edit
+                            </button>
+                        </div>
+                    )}
                 </ul>
+
             </div >
         </>
     );

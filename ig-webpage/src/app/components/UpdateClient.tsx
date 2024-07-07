@@ -52,10 +52,11 @@ export default function UpdateClient({ client, onUpdateSuccess }: Props) {
     };
 
     return (
-        <div>
+        <div className="bg-gray-200 border-black border border-l-8 p-4 rounded-md drop-shadow-md space-x-6">
+            <h1><b>Edit: {client.name}</b></h1>
             <form onSubmit={handleSubmit}>
-                <div>
-                    <label>Name:</label>
+                <div className="space-y-2">
+                    <label>Name: </label>
                     <input
                         type="text"
                         name="name"
@@ -64,8 +65,8 @@ export default function UpdateClient({ client, onUpdateSuccess }: Props) {
                         required
                     />
                 </div>
-                <div>
-                    <label>Email:</label>
+                <div className="space-y-2">
+                    <label>Email: </label>
                     <input
                         type="email"
                         name="email"
@@ -74,8 +75,8 @@ export default function UpdateClient({ client, onUpdateSuccess }: Props) {
                         required
                     />
                 </div>
-                <div>
-                    <label>Phone Number:</label>
+                <div className="space-y-2">
+                    <label>Phone Number: </label>
                     <input
                         type="tel"
                         name="phone_number"
@@ -85,7 +86,7 @@ export default function UpdateClient({ client, onUpdateSuccess }: Props) {
                     />
                 </div>
                 {error && <p>Error: {error}</p>}
-                <button type="submit" disabled={loading}>
+                <button type="submit" disabled={loading}  className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-700">
                     {loading ? 'Updating...' : 'Update Client'}
                 </button>
             </form>
