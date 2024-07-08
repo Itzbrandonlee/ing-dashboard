@@ -7,6 +7,7 @@ export default function Header() {
             <div className="flex space-x-4">
                 <Link href="/">Home</Link>
                 <Link href="/clients">Clients</Link>
+                <Link href="/appointments">Appointments</Link>
             </div>
         </div>
 
