@@ -12,7 +12,7 @@ interface Client {
 }
 
 // Function to fetch client data
-async function getClients(): Promise<Client[]> {
+export async function getClients(): Promise<Client[]> {
     const res = await fetch('http://127.0.0.1:5000/clients');
     if (!res.ok) {
         throw new Error('Network response was not ok');

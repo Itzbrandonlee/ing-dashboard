@@ -1,19 +1,20 @@
 from database import Database
 
 class Appointments(Database):
-    def __init__(self, appt_id=None, appt_date=None, appt_time=None, paid=None, client_id=None, order_id=None):
+    def __init__(self, appt_id=None, appt_date=None, appt_time=None, paid=None, client_id=None, order_id=None, name=None):
         self.appt_id = appt_id
         self.appt_date = appt_date
         self.appt_time = appt_time
         self.paid = paid
         self.client_id = client_id
         self.order_id = order_id
+        self.name = name
 
     @classmethod
     def get_all_appts(cls):
         conn = cls.get_db_connection()
         cur = conn.cursor()
-        cur.execute('SELECT * FROM appointments;')
+        cur.execute('SELECT a.appt_id, a.appt_date, a.appt_time, a.paid, a.client_id, a.order_id, c.name FROM appointments a JOIN client c ON a.client_id = c.id;')
         appts = cur.fetchall()
         cur.close()
         conn.close()
@@ -72,4 +73,4 @@ class Appointments(Database):
         return None
 
     def to_dict(self):
-        return {'appt_id': self.appt_id, 'appt_date': self.appt_date.isoformat(), 'appt_time': self.appt_time.strftime('%H:%M:%S') if self.appt_time else None, 'paid': self.paid, 'client_id': self.client_id, 'order_id': self.order_id}
+        return {'appt_id': self.appt_id, 'appt_date': self.appt_date.isoformat(), 'appt_time': self.appt_time.strftime('%H:%M:%S') if self.appt_time else None, 'paid': self.paid, 'client_id': self.client_id, 'order_id': self.order_id, 'name': self.name}

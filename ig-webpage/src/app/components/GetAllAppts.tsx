@@ -1,13 +1,15 @@
 "use client"
 import { useState, useEffect } from 'react'
+import AddAppt from './AddAppt'
 
 interface Appointment {
     appt_id: string;
-    appt_date:string;
+    appt_date: string;
     appt_time: string;
     paid: boolean;
     client_id: string;
     order_id: string;
+    name: string;
 }
 
 async function getAllAppts(): Promise<Appointment[]> {
@@ -37,7 +39,7 @@ export default function GetAllAppts() {
                 setLoading(false)
             })
     }, [])
-    
+
     if (loading) {
         return <p>Loading...</p>;
     }
@@ -48,31 +50,41 @@ export default function GetAllAppts() {
 
     return (
         <>
-            <div className="w-1/2 mx-auto">
-                <ul className="space-y-4">
+            <AddAppt />
+            <table className="table-auto w-3/4">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Client</th>
+                        <th>Order Number</th>
+                        <th>Paid?</th>
+                    </tr>
+                </thead>
+                <tbody>
                     {appts.map(appt => (
-                        <li key={appt.appt_id}>
-                            <div>
-                                <p>
-                                    Date: {appt.appt_date}
-                                </p>
-                                <p>
-                                    Time: {appt.appt_time}
-                                </p>
-                                <p>
-                                    Paid: {appt.paid ? 'Yes' : 'No'}
-                                </p>
-                                <p>
-                                    Client: {appt.client_id}
-                                </p>
-                                <p>
-                                    Order Number: {appt.order_id}
-                                </p>
-                            </div>
-                        </li>
+                        <tr key={appt.appt_id} className="hover:bg-slate-400">
+
+                            <td className="border">
+                                {appt.appt_date}
+                            </td>
+                            <td className="border">
+                                {appt.appt_time}
+                            </td>
+                            <td className="border">
+                                {appt.name}
+                            </td>
+                            <td className="border">
+                                {appt.order_id}
+                            </td>
+                            <td className="border">
+                                {appt.paid ? 'Yes' : 'No'}
+                            </td>
+                        </tr>
                     ))}
-                </ul>
-            </div>
+                </tbody>
+            </table>
+
         </>
     )
 }

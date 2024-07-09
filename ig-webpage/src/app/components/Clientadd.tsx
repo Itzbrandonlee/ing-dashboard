@@ -12,7 +12,7 @@ export default function Clientadd() {
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [phoneNumber, setPhoneNumber] = useState('')
-    const [ loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(false)
     const [error, setError] = useState<Error | null>(null)
     const [success, setSuccess] = useState(false)
 
