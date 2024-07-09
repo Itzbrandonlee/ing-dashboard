@@ -81,21 +81,21 @@ export default function AddAppt() {
         setClientId(e.target.value)
     }
     return (
-        <div className="bg-gray-200 border-black border border-l-8 p-4 rounded-md drop-shadow-md space-x-6">
-            <h1><b>Add New Appointment</b></h1>
-            {success && <p>Appointment added successfully!</p>}
-            <form onSubmit={handleSubmit}>
-                <div className="space-y-2">
-                    <label htmlFor="date">Date: </label>
-                    <input type="date" id="appt_date" value={apptDate} min="2022-01-01" max="2050-01-01" onChange={(e) => setApptDate(e.target.value)} required />
+        <div className="bg-gray-200 border-black border border-l-8 p-6 rounded-md shadow-lg space-y-4">
+            <h1 className='text-lg font-bold text-gray-800 mb-4'><b>Add New Appointment</b></h1>
+            {success && <p className='text-green-500'>Appointment added successfully!</p>}
+            <form onSubmit={handleSubmit} className='space-y-4'>
+                <div>
+                    <label htmlFor="date" className="block text-gray-700">Date: </label>
+                    <input type="date" id="appt_date" value={apptDate} min="2022-01-01" max="2050-01-01" className="w-full p-2 border border-gray-300 rounded" onChange={(e) => setApptDate(e.target.value)} required />
                 </div>
-                <div className="space-y-2">
-                    <label htmlFor="appt_time">Time: </label>
-                    <input type="time" id="apptTime" value={apptTime} onChange={(e) => setApptTime(e.target.value)} required />
+                <div>
+                    <label htmlFor="appt_time" className="block text-gray-700">Time: </label>
+                    <input type="time" id="apptTime" value={apptTime} className="w-full p-2 border border-gray-300 rounded" onChange={(e) => setApptTime(e.target.value)} required />
                 </div>
-                <div className="space-y-2">
-                    <label htmlFor="clientId">Client: </label>
-                    <select name="clientId" id="clientId" value={clientId} onChange={handleClientChange} required>
+                <div>
+                    <label htmlFor="clientId" className="block text-gray-700">Client: </label>
+                    <select name="clientId" id="clientId" value={clientId} className="w-full p-2 border border-gray-300 rounded" onChange={handleClientChange} required>
                         <option value="">Select a client</option>
                         {clients.map(client => (
                             <option key={client.id} value={client.id}>
@@ -104,18 +104,18 @@ export default function AddAppt() {
                         ))}
                     </select>
                 </div>
-                <div className="space-y-2">
-                    <label htmlFor="OrderId">Order Number: </label>
-                    <input type="text" id="orderNumber" value={orderId} onChange={(e) => setOrderId(e.target.value)} />
+                <div>
+                    <label htmlFor="OrderId" className="block text-gray-700">Order Number: </label>
+                    <input type="text" id="orderNumber" value={orderId} className="w-full p-2 border border-gray-300 rounded" onChange={(e) => setOrderId(e.target.value)} />
                 </div>
-                <div className="space-y-2">
-                    <label htmlFor="phoneNumber">Paid: </label>
-                    <select name="paid" id="paid" value={paid ? 'yes' : 'no'} onChange={handlePaidChange}>
+                <div>
+                    <label htmlFor="paid" className="block text-gray-700">Paid: </label>
+                    <select name="paid" id="paid" value={paid ? 'yes' : 'no'} className="w-full p-2 border border-gray-300 rounded" onChange={handlePaidChange}>
                         <option value="yes">Yes</option>
                         <option value="no">No</option>
                     </select>
                 </div>
-                <button type="submit" disabled={loading} className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-700">{loading ? 'Submitting...' : 'Add Client'}</button>
+                <button type="submit" disabled={loading} className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-700 w-full">{loading ? 'Submitting...' : 'Add Client'}</button>
             </form>
         </div>
     )
