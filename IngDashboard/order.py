@@ -50,9 +50,9 @@ class Order(Database):
         conn = cls.get_db_connection()
         cur = conn.cursor()
         if address:
-            cur.execute('UPDATE orders SET address = %s WHERE order_id_id = %s', (address, order_id))
+            cur.execute('UPDATE orders SET address = %s WHERE order_id = %s', (address, order_id))
         if num_of_windows:
-            cur.execute('UPDATE order SET num_of_windows = %s WHERE order_id = %s', (num_of_windows, order_id))
+            cur.execute('UPDATE orders SET num_of_windows = %s WHERE order_id = %s', (num_of_windows, order_id))
         if num_of_doors:
             cur.execute('UPDATE orders SET num_of_doors = %s WHERE order_id = %s', (num_of_doors, order_id))
         if notes:
