@@ -107,7 +107,7 @@ export default function GetAllAppts() {
                 </thead>
                 <tbody>
                     {appts.map(appt => (
-                        <tr key={appt.appt_id} className="hover:bg-grey-100 border-b border-gray-200">
+                        <tr key={appt.appt_id} className="hover:bg-gray-200 border-b border-gray-200">
 
                             <td className="px-4 py-2">
                                 {appt.appt_date}

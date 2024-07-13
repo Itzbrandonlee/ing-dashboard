@@ -8,7 +8,7 @@ def get_orders():
     orders = Order.get_all_orders()
     return jsonify([order.to_dict() for order in orders])
 
-@order_bp.route('/order/<int:order_id>', methods=['GET'])
+@order_bp.route('/orders/<int:order_id>', methods=['GET'])
 def get_order_by_id(order_id):
     order = Order.get_order_by_id(order_id)
     return jsonify([order.to_dict()])
