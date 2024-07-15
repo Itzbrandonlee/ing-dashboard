@@ -21,21 +21,7 @@ async function getOrderDetails(order_id: string): Promise<Order> {
         throw new Error('Network response was not ok')
     }
     const data = await res.json()
-    return data
-    const mappedOrder: Order = {
-        order_id: data.order_id,
-        address: data.address,
-        num_of_windows: data.num_of_windows,
-        num_of_doors: data.num_of_doors,
-        notes: data.notes,
-        total_cost: data.total_cost,
-        cost_paid: data.cost_paid,
-        rem_balance: data.rem_balance,
-        appt_id: data.appt_id,
-        client_id: data.client_id,
-        name: data.name,
-      };
-      return mappedOrder;
+    return data;
 }
 
 interface GetOrderDetailsProps {

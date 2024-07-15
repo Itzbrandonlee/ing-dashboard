@@ -11,7 +11,7 @@ def get_orders():
 @order_bp.route('/orders/<int:order_id>', methods=['GET'])
 def get_order_by_id(order_id):
     order = Order.get_order_by_id(order_id)
-    return jsonify([order.to_dict()])
+    return jsonify(order.to_dict())
 
 @order_bp.route('/order', methods=['POST'])
 def add_order():
