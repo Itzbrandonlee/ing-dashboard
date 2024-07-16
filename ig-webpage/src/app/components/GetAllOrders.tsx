@@ -1,6 +1,8 @@
 "use client"
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import DeleteOrder from './DeleteOrder'
+import AddOrder from './AddOrder'
 
 interface Order {
     order_id: string
@@ -28,6 +30,7 @@ export default function GetAllOrders() {
     const [orders, setOrders] = useState<Order[]>([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState<Error | null>(null)
+    const [addingOrder, setAddingOrder] = useState(false);
 
 
     useEffect(() => {
@@ -52,24 +55,33 @@ export default function GetAllOrders() {
         return <p className='text-red-500'>Error: {error.message}</p>;
     }
 
-
+    const handleAddSuccess = () => {
+        setAddingOrder(false);
+        getAllOrders()
+            .then(data => {
+                setOrders(data);
+            })
+            .catch(err => {
+                console.error('Failed to refresh orders:', err);
+            });
+    };
     return (
         <div className='container mx-auto p-4'>
             <div className='flex justify-between items-center mb-4'>
                 <h1 className='text-2xl font-bold text-gray-800'>Orders</h1>
             </div>
-            {/* <div>{addingAppt && <AddAppt onAddSuccess={handleAddSuccess} />}</div>
-            <div className="flex justify-end mb-4">
-
-                <button
-                    onClick={() => setAddingAppt(!addingAppt)}
-                    className="bg-green-500 text-white px-4 py-2 rounded"
-                >
-                    {addingAppt ? 'Cancel' : 'Add Client'}
-                </button>
-
-            </div> */}
             <div className='overflow-x-auto'>
+                <div>{addingOrder && <AddOrder onAddSuccess={handleAddSuccess} />}</div>
+                <div className="flex justify-end mb-4">
+
+                    <button
+                        onClick={() => setAddingOrder(!addingOrder)}
+                        className="bg-green-500 text-white px-4 py-2 rounded"
+                    >
+                        {addingOrder ? 'Cancel' : 'Add Client'}
+                    </button>
+
+                </div>
                 <table className="table-auto w-full bg-white shadow-md rounded-lg">
                     <thead>
                         <tr className='bg-blue-950 text-white'>
@@ -92,13 +104,14 @@ export default function GetAllOrders() {
                                 <td className="px-4 py-2">
                                     {order.rem_balance}
                                 </td>
-                                <td className="px-4 py-2">
-                                    Buttons for Edit, Delete, and View Order
+                                <td className="px-4 py-2 flex space-x-4">
+                                    Buttons for edit order, schedule for an appointment. Add a column to see if the order has an appointment
                                     <Link href={`/orders/${order.order_id}`}>
-                                        <button className="bg-blue-500 text-white px-4 py-2 rounded">
+                                        <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-800">
                                             View Order
                                         </button>
                                     </Link>
+                                    <DeleteOrder order={order} />
                                 </td>
                             </tr>
                         ))}

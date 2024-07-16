@@ -1,103 +1,131 @@
-"use client"
-import { useState, useEffect } from 'react'
-import { getClients } from './Clientlist'
+import React, { useState, useEffect } from 'react';
+import { getClients } from './Clientlist';
 
 interface Appointment {
-    appt_id: string;
+    appt_id: number;
     appt_date: string;
     appt_time: string;
-    client_id: string;
-    order_id: string;
+    client_id: number;
+    order_id: number;
     paid: boolean;
 }
 
 interface Client {
-    id: string
-    name: string
+    id: string;
+    name: string;
 }
 
-export default function AddAppt() {
-    const [apptDate, setApptDate] = useState('')
-    const [apptTime, setApptTime] = useState('')
-    const [clientId, setClientId] = useState('')
-    const [orderId, setOrderId] = useState('')
-    const [paid, setPaid] = useState(false)
-    const [clients, setClients] = useState<Client[]>([])
-    const [loading, setLoading] = useState(false)
-    const [error, setError] = useState<Error | null>(null)
-    const [success, setSuccess] = useState(false)
+interface Props {
+    onAddSuccess: (apptId: string) => void;
+}
+
+const AddAppt: React.FC<Props> = ({ onAddSuccess }) => {
+    const [apptDate, setApptDate] = useState('');
+    const [apptTime, setApptTime] = useState('');
+    const [clientId, setClientId] = useState('');
+    const [orderId, setOrderId] = useState('');
+    const [paid, setPaid] = useState(false);
+    const [clients, setClients] = useState<Client[]>([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+    const [success, setSuccess] = useState(false);
+
+    useEffect(() => {
+        getClients()
+            .then(data => setClients(data))
+            .catch(err => console.error('Failed to fetch clients', err));
+    }, []);
 
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
-        setLoading(true)
-        setError(null)
-        setSuccess(false)
+        setLoading(true);
+        setError(null);
 
-        const newAppt: Omit<Appointment, 'appt_id'> = { appt_date: apptDate, appt_time: apptTime, client_id: clientId, order_id: orderId, paid }
+        const newAppt: Omit<Appointment, 'appt_id'> = {
+            appt_date: apptDate,
+            appt_time: apptTime,
+            client_id: parseInt(clientId),
+            order_id: parseInt(orderId),
+            paid,
+        };
 
         try {
             const res = await fetch('http://127.0.0.1:5000/appt', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(newAppt)
+                body: JSON.stringify(newAppt),
             });
 
             if (!res.ok) {
-                throw new Error('Netword response was not ok');
+                throw new Error('Network response was not ok');
             }
 
-            setApptDate('')
+            const data = await res.json();
+            onAddSuccess(data.appt_id);
+            setApptDate('');
             setApptTime('');
-            setClientId('')
-            setOrderId('')
-            setPaid(true)
-            setSuccess(true)
+            setClientId('');
+            setOrderId('');
+            setPaid(false);
+            setSuccess(true);
         } catch (error) {
-            console.error('Failed to add client', error)
+            console.error('Failed to add appointment', error);
+            setError(error.message || 'Failed to add appointment');
         } finally {
-            setLoading(false)
+            setLoading(false);
         }
-    }
+    };
 
-    useEffect(() => {
-        if (success) {
-            window.location.reload();
-        }
-    }, [success])
-
-    const handlePaidChange = (e) => {
-        setPaid(e.target.value === 'yes')
-    }
-
-    useEffect(() => {
-        getClients()
-            .then(data => setClients(data))
-            .catch(err => console.error('Failed to fetch clients'))
-    }, [])
-
-    const handleClientChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        setClientId(e.target.value)
-    }
     return (
         <div className="bg-gray-200 border-black border border-l-8 p-6 rounded-md shadow-lg space-y-4">
-            <h1 className='text-lg font-bold text-gray-800 mb-4'><b>Add New Appointment</b></h1>
-            {success && <p className='text-green-500'>Appointment added successfully!</p>}
-            <form onSubmit={handleSubmit} className='space-y-4'>
+            <h1 className="text-lg font-bold text-gray-800 mb-4">
+                <b>Add New Appointment</b>
+            </h1>
+            {success && <p className="text-green-500">Appointment added successfully!</p>}
+            {error && <p className="text-red-500">{error}</p>}
+            <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
-                    <label htmlFor="date" className="block text-gray-700">Date: </label>
-                    <input type="date" id="appt_date" value={apptDate} min="2022-01-01" max="2050-01-01" className="w-full p-2 border border-gray-300 rounded" onChange={(e) => setApptDate(e.target.value)} required />
+                    <label htmlFor="apptDate" className="block text-gray-700">
+                        Appointment Date:{' '}
+                    </label>
+                    <input
+                        type="date"
+                        id="apptDate"
+                        value={apptDate}
+                        className="w-full p-2 border border-gray-300 rounded"
+                        onChange={(e) => setApptDate(e.target.value)}
+                        required
+                    />
                 </div>
                 <div>
-                    <label htmlFor="appt_time" className="block text-gray-700">Time: </label>
-                    <input type="time" id="apptTime" value={apptTime} className="w-full p-2 border border-gray-300 rounded" onChange={(e) => setApptTime(e.target.value)} required />
+                    <label htmlFor="apptTime" className="block text-gray-700">
+                        Appointment Time:{' '}
+                    </label>
+                    <input
+                        type="time"
+                        id="apptTime"
+                        value={apptTime}
+                        className="w-full p-2 border border-gray-300 rounded"
+                        onChange={(e) => setApptTime(e.target.value)}
+                        required
+                    />
                 </div>
                 <div>
-                    <label htmlFor="clientId" className="block text-gray-700">Client: </label>
-                    <select name="clientId" id="clientId" value={clientId} className="w-full p-2 border border-gray-300 rounded" onChange={handleClientChange} required>
+                    <label htmlFor="clientId" className="block text-gray-700">
+                        Client:{' '}
+                    </label>
+                    <select
+                        name="clientId"
+                        id="clientId"
+                        value={clientId}
+                        className="w-full p-2 border border-gray-300 rounded"
+                        onChange={(e) => setClientId(e.target.value)}
+                        required
+                    >
                         <option value="">Select a client</option>
-                        {clients.map(client => (
+                        {clients.map((client) => (
                             <option key={client.id} value={client.id}>
                                 {client.name}
                             </option>
@@ -105,18 +133,39 @@ export default function AddAppt() {
                     </select>
                 </div>
                 <div>
-                    <label htmlFor="OrderId" className="block text-gray-700">Order Number: </label>
-                    <input type="text" id="orderNumber" value={orderId} className="w-full p-2 border border-gray-300 rounded" onChange={(e) => setOrderId(e.target.value)} />
+                    <label htmlFor="orderId" className="block text-gray-700">
+                        Order ID:{' '}
+                    </label>
+                    <input
+                        type="text"
+                        id="orderId"
+                        value={orderId}
+                        className="w-full p-2 border border-gray-300 rounded"
+                        onChange={(e) => setOrderId(e.target.value)}
+                        required
+                    />
                 </div>
                 <div>
-                    <label htmlFor="paid" className="block text-gray-700">Paid: </label>
-                    <select name="paid" id="paid" value={paid ? 'yes' : 'no'} className="w-full p-2 border border-gray-300 rounded" onChange={handlePaidChange}>
-                        <option value="yes">Yes</option>
-                        <option value="no">No</option>
-                    </select>
+                    <label htmlFor="paid" className="block text-gray-700">
+                        Paid:{' '}
+                    </label>
+                    <input
+                        type="checkbox"
+                        id="paid"
+                        checked={paid}
+                        onChange={(e) => setPaid(e.target.checked)}
+                    />
                 </div>
-                <button type="submit" disabled={loading} className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-700 w-full">{loading ? 'Submitting...' : 'Add Client'}</button>
+                <button
+                    type="submit"
+                    disabled={loading}
+                    className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-700 w-full"
+                >
+                    {loading ? 'Submitting...' : 'Add Appointment'}
+                </button>
             </form>
         </div>
-    )
-}
+    );
+};
+
+export default AddAppt;

@@ -1,6 +1,6 @@
 "use client"
 import {useState, useEffect} from 'react'
-
+import DeleteOrder from './DeleteOrder'
 interface Order {
     order_id: string
     address: string
@@ -69,9 +69,10 @@ export default function GetOrderDetails({order_id}: GetOrderDetailsProps) {
                                 </div>
                             </div>
                         </li>
+                       
                     )}
                 </ul>
-
+                <DeleteOrder order={order} />
             </div >
         </>
     );
