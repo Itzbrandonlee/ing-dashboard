@@ -1,5 +1,6 @@
 from flask import Blueprint, request, jsonify
 from appointments import Appointments
+from order import Order
 
 appt_bp = Blueprint('appt_bp', __name__)
 
@@ -9,15 +10,20 @@ def get_appointments():
     return jsonify([appt.to_dict() for appt in appts])
 
 @appt_bp.route('/appt', methods=['POST'])
-def add_appt():
-    new_appt = request.get_json()
-    appt_date = new_appt['appt_date']
-    appt_time = new_appt['appt_time']
-    paid = new_appt['paid']
-    client_id = new_appt['client_id']
-    order_id = new_appt['order_id']
+def add_appointment():
+    data = request.json
+    appt_date = data['appt_date']
+    appt_time = data['appt_time']
+    client_id = data['client_id']
+    order_id = data['order_id']
+    paid = data['paid']
+
     appt = Appointments.add_appt(appt_date, appt_time, paid, client_id, order_id)
-    return jsonify(appt.to_dict()), 201
+
+    # Update the order with the new appointment ID
+    Order.update_order(order_id, appt_id=appt.appt_id)
+
+    return jsonify(appt.to_dict())
 
 @appt_bp.route('/appt/<int:appt_id>', methods=['PUT'])
 def update_appt(appt_id):

@@ -17,13 +17,13 @@ interface Client {
 
 interface Props {
     onAddSuccess: (apptId: string) => void;
+    orderId: string;
 }
 
-const AddAppt: React.FC<Props> = ({ onAddSuccess }) => {
+const AddAppt: React.FC<Props> = ({ onAddSuccess, orderId }) => {
     const [apptDate, setApptDate] = useState('');
     const [apptTime, setApptTime] = useState('');
     const [clientId, setClientId] = useState('');
-    const [orderId, setOrderId] = useState('');
     const [paid, setPaid] = useState(false);
     const [clients, setClients] = useState<Client[]>([]);
     const [loading, setLoading] = useState(false);
@@ -67,7 +67,6 @@ const AddAppt: React.FC<Props> = ({ onAddSuccess }) => {
             setApptDate('');
             setApptTime('');
             setClientId('');
-            setOrderId('');
             setPaid(false);
             setSuccess(true);
         } catch (error) {
@@ -133,19 +132,6 @@ const AddAppt: React.FC<Props> = ({ onAddSuccess }) => {
                     </select>
                 </div>
                 <div>
-                    <label htmlFor="orderId" className="block text-gray-700">
-                        Order ID:{' '}
-                    </label>
-                    <input
-                        type="text"
-                        id="orderId"
-                        value={orderId}
-                        className="w-full p-2 border border-gray-300 rounded"
-                        onChange={(e) => setOrderId(e.target.value)}
-                        required
-                    />
-                </div>
-                <div>
                     <label htmlFor="paid" className="block text-gray-700">
                         Paid:{' '}
                     </label>
@@ -153,15 +139,16 @@ const AddAppt: React.FC<Props> = ({ onAddSuccess }) => {
                         type="checkbox"
                         id="paid"
                         checked={paid}
+                        className="p-2"
                         onChange={(e) => setPaid(e.target.checked)}
                     />
                 </div>
                 <button
                     type="submit"
+                    className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700"
                     disabled={loading}
-                    className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-700 w-full"
                 >
-                    {loading ? 'Submitting...' : 'Add Appointment'}
+                    {loading ? 'Adding...' : 'Add Appointment'}
                 </button>
             </form>
         </div>

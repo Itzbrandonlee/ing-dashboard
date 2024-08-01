@@ -1,5 +1,6 @@
 from database import Database
-
+from datetime import datetime
+from order import Order
 class Appointments(Database):
     def __init__(self, appt_id=None, appt_date=None, appt_time=None, paid=None, client_id=None, order_id=None, name=None):
         self.appt_id = appt_id
@@ -22,10 +23,13 @@ class Appointments(Database):
 
     @classmethod
     def add_appt(cls, appt_date, appt_time, paid, client_id, order_id):
+        appt_date = datetime.strptime(appt_date, '%Y-%m-%d')
+        appt_time = datetime.strptime(appt_time, '%H:%M').time()
         conn = cls.get_db_connection()
         cur = conn.cursor()
         cur.execute('INSERT INTO appointments (appt_date, appt_time, paid, client_id, order_id) VALUES (%s, %s, %s, %s, %s) RETURNING appt_id', (appt_date, appt_time, paid, client_id, order_id))
         new_id = cur.fetchone()['appt_id']
+        cur.execute("UPDATE orders SET appt_id = %s WHERE order_id = %s", (new_id, order_id))
         conn.commit()
         cur.close()
         conn.close()
