@@ -135,7 +135,7 @@ export default function UpdateAppt({ appointment, onUpdateSuccess }: Props) {
                 </div>
                 {error && <p>Error: {error}</p>}
                 <button type="submit" disabled={loading}  className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700 w-full">
-                    {loading ? 'Updating...' : 'Update Client'}
+                    {loading ? 'Updating...' : 'Update Appointment'}
                 </button>
             </form>
         </div>

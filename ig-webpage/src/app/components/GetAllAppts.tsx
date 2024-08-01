@@ -89,7 +89,7 @@ export default function GetAllAppts() {
                     onClick={() => setAddingAppt(!addingAppt)}
                     className="bg-green-500 text-white px-4 py-2 rounded"
                 >
-                    {addingAppt ? 'Cancel' : 'Add Client'}
+                    {addingAppt ? 'Cancel' : 'Add Appointment'}
                 </button>
 
             </div>
