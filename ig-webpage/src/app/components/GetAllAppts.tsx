@@ -81,56 +81,57 @@ export default function GetAllAppts() {
         <div className='container mx-auto p-4'>
             <div className='flex justify-between items-center mb-4'>
                 <h1 className='text-2xl font-bold text-gray-800'>Appointments</h1>
-            </div>
-            <div>{addingAppt && <AddAppt onAddSuccess={handleAddSuccess} />}</div>
-            <div className="flex justify-end mb-4">
 
-                <button
-                    onClick={() => setAddingAppt(!addingAppt)}
-                    className="bg-green-500 text-white px-4 py-2 rounded"
-                >
-                    {addingAppt ? 'Cancel' : 'Add Appointment'}
-                </button>
+                <div>{addingAppt && <AddAppt onAddSuccess={handleAddSuccess} />}</div>
+                <div className="flex justify-end mb-4">
 
+                    <button
+                        onClick={() => setAddingAppt(!addingAppt)}
+                        className="bg-green-500 text-white px-4 py-2 rounded"
+                    >
+                        {addingAppt ? 'Cancel' : 'Add Appointment'}
+                    </button>
+
+                </div>
             </div>
             <div className='overflow-x-auto'>
-            <table className="table-auto w-full bg-white shadow-md rounded-lg">
-                <thead>
-                    <tr className='bg-blue-950 text-white'>
-                        <th className='px-4 py-2 text-left'>Date</th>
-                        <th className='px-4 py-2 text-left'>Time</th>
-                        <th className='px-4 py-2 text-left'>Client</th>
-                        <th className='px-4 py-2 text-left'>Order Number</th>
-                        <th className='px-4 py-2 text-left'>Paid?</th>
-                        <th className='px-4 py-2'></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {appts.map(appt => (
-                        <tr key={appt.appt_id} className="hover:bg-gray-200 border-b border-gray-200">
-
-                            <td className="px-4 py-2">
-                                {appt.appt_date}
-                            </td>
-                            <td className="px-4 py-2">
-                                {appt.appt_time}
-                            </td>
-                            <td className="px-4 py-2">
-                                {appt.name}
-                            </td>
-                            <td className="px-4 py-2">
-                                {appt.order_id}
-                            </td>
-                            <td className="px-4 py-2">
-                                {appt.paid ? 'Yes' : 'No'}
-                            </td>
-                            <td className="px-4 py-2 flex space-x-6">
-                                <DeleteAppt appointment={appt} /><button onClick={() => setEditingAppt(appt)} className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-700">Edit</button>
-                            </td>
+                <table className="table-auto w-full bg-white shadow-md rounded-lg">
+                    <thead>
+                        <tr className='bg-blue-950 text-white'>
+                            <th className='px-4 py-2 text-left'>Date</th>
+                            <th className='px-4 py-2 text-left'>Time</th>
+                            <th className='px-4 py-2 text-left'>Client</th>
+                            <th className='px-4 py-2 text-left'>Order Number</th>
+                            <th className='px-4 py-2 text-left'>Paid in full?</th>
+                            <th className='px-4 py-2'></th>
                         </tr>
-                    ))}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {appts.map(appt => (
+                            <tr key={appt.appt_id} className="hover:bg-gray-200 border-b border-gray-200">
+
+                                <td className="px-4 py-2">
+                                    {appt.appt_date}
+                                </td>
+                                <td className="px-4 py-2">
+                                    {appt.appt_time}
+                                </td>
+                                <td className="px-4 py-2">
+                                    {appt.name}
+                                </td>
+                                <td className="px-4 py-2">
+                                    {appt.order_id}
+                                </td>
+                                <td className="px-4 py-2">
+                                    {appt.paid ? 'Yes' : 'No'}
+                                </td>
+                                <td className="px-4 py-2 flex space-x-6">
+                                    <DeleteAppt appointment={appt} /><button onClick={() => setEditingAppt(appt)} className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-700">Edit</button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
             </div>
             {editingAppt && (
                 <div className='mt-4 p-4 bg-gray-200 border-black border-l-8 rounded-md shadow-large'>

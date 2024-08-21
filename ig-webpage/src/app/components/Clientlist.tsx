@@ -1,8 +1,8 @@
 "use client";
 import { useState, useEffect } from 'react';
-import DeleteClient from './DeleteClient'
-import UpdateClient from './UpdateClient'
-import AddClient from './Clientadd'
+import DeleteClient from './DeleteClient';
+import UpdateClient from './UpdateClient';
+import AddClient from './Clientadd';
 
 interface Client {
     id: string;
@@ -56,7 +56,7 @@ export default function ClientList() {
     const handleCancelEdit = () => {
         setEditingClient(null);
     };
-    
+
     const handleUpdateSuccess = () => {
         setEditingClient(null);
         getClients()
@@ -69,60 +69,75 @@ export default function ClientList() {
     };
 
     if (loading) {
-        return <p>Loading...</p>;
+        return <p className='text-gray-500 text-center py-4'>Loading...</p>;
     }
 
     if (error) {
-        return <p>Error: {error.message}</p>;
+        return <p className='text-red-500 text-center py-4'>Error: {error.message}</p>;
     }
 
     return (
         <>
             <div className="w-3/4 mx-auto">
-
-                <div>{addingClient && <AddClient onAddSuccess={handleAddSuccess} />}</div>
-                <div className="flex justify-end mb-4">
-
+            <div className='flex justify-between items-center mb-4'>
+                <h1 className='text-2xl font-bold text-gray-800'>Clients</h1>
+                {addingClient && (
+                    <div className="rounded-lg p-4 mb-4">
+                        <AddClient onAddSuccess={handleAddSuccess} />
+                    </div>
+                )}
+                <div className="flex justify-end mb-2">
                     <button
                         onClick={() => setAddingClient(!addingClient)}
-                        className="bg-green-500 text-white px-4 py-2 rounded"
+                        className="bg-green-500 text-white px-4 py-2 rounded transition duration-300 ease-in-out hover:bg-green-700"
                     >
                         {addingClient ? 'Cancel' : 'Add Client'}
                     </button>
-
                 </div>
+                </div>
+            
 
-                <ul className="space-y-4">
+            <table className="table-auto w-full bg-white shadow-md rounded-lg">
+                <thead>
+                    <tr className='bg-blue-950 text-white'>
+                        <th className='px-4 py-2 text-left'>Name</th>
+                        <th className='px-4 py-2 text-left'>Email</th>
+                        <th className='px-4 py-2 text-left'>Phone number</th>
+                        <th className='px-4 py-2'></th>
+                    </tr>
+                </thead>
+                <tbody>
                     {clients.map(client => (
-                        <li key={client.id} className="bg-gray-200 border-black border border-l-8 p-4 rounded-md drop-shadow-md">
-                            <div className="flex justify-between items-center">
-                                <div>
-                                    <p className="font-bold">{client.name}</p>
-                                    <p> <b>Email:</b> {client.email}</p>
-                                    <p> <b>Phone Number:</b> {client.phone_number}</p>
-                                </div>
-                                <div className="flex space-x-4">
-                                    <button onClick={() => setEditingClient(client)} className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-700">Edit</button><DeleteClient client={client} />
-                                </div>
-                            </div>
-                        </li>
+                        <tr key={client.id} className="hover:bg-gray-200 border-b border-gray-200">
+                            <td className="px-4 py-2">{client.name}</td>
+                            <td className="px-4 py-2">{client.email}</td>
+                            <td className="px-4 py-2">{client.phone_number}</td>
+                            <td className="px-4 py-2 flex flex-col sm:flex-row sm:space-x-6">
+                                <button
+                                    onClick={() => setEditingClient(client)}
+                                    className="bg-blue-500 text-white px-3 py-1 rounded transition duration-300 ease-in-out hover:bg-blue-700"
+                                >
+                                    Edit
+                                </button>
+                                <DeleteClient client={client} />
+                            </td>
+                        </tr>
                     ))}
-                    
-                    {editingClient && (
-                        <div>
-                            <UpdateClient client={editingClient} onUpdateSuccess={handleUpdateSuccess} />
-                            <button
-                                onClick={handleCancelEdit}
-                                className="bg-red-500 text-white px-4 py-2 rounded mt-2"
-                            >
-                                Cancel Edit
-                            </button>
-                        </div>
-                    )}
-                </ul>
+                </tbody>
+            </table>
 
-            </div >
+            {editingClient && (
+                <div className='mt-4 p-4 bg-gray-200 border-black border-l-8 rounded-md shadow-lg'>
+                    <UpdateClient client={editingClient} onUpdateSuccess={handleUpdateSuccess} />
+                    <button
+                        onClick={handleCancelEdit}
+                        className="bg-red-500 text-white px-4 py-2 rounded mt-2 transition duration-300 ease-in-out hover:bg-red-700"
+                    >
+                        Cancel Edit
+                    </button>
+                </div>
+            )}
+            </div>
         </>
     );
 }
-
