@@ -36,6 +36,11 @@ def update_appt(appt_id):
     appt = Appointments.update_appt(appt_id, appt_date, appt_time, paid, client_id, order_id)
     return jsonify(appt.to_dict())
 
+@appt_bp.route('/appt/<string:appt_date>', methods=['GET'])
+def get_appt_by_date(appt_date):
+    appts = Appointments.get_appt_by_date(appt_date)
+    return jsonify([appt.to_dict() for appt in appts])
+
 @appt_bp.route('/appt/<int:appt_id>', methods=['DELETE'])
 def delete_appt(appt_id):
     result = Appointments.delete_appt(appt_id)

@@ -76,5 +76,16 @@ class Appointments(Database):
             return cls(**appt)
         return None
 
+    @classmethod
+    def get_appt_by_date(cls, appt_date):
+        conn = cls.get_db_connection()
+        cur = conn.cursor()
+        cur.execute('SELECT a.appt_id, a.appt_date, a.appt_time, a.paid, a.client_id, a.order_id, c.name FROM appointments a JOIN client c ON a.client_id = c.id WHERE appt_date = %s;', (appt_date,))
+        appts = cur.fetchall()
+        cur.close()
+        conn.close()
+        return [cls(**appt) for appt in appts]
+
+
     def to_dict(self):
         return {'appt_id': self.appt_id, 'appt_date': self.appt_date.isoformat(), 'appt_time': self.appt_time.strftime('%H:%M:%S') if self.appt_time else None, 'paid': self.paid, 'client_id': self.client_id, 'order_id': self.order_id, 'name': self.name}
